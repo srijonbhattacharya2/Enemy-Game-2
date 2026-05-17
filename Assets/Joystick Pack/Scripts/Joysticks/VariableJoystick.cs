@@ -18,6 +18,8 @@ public class VariableJoystick : Joystick
 
 	private Vector2 fixedPosition = Vector2.zero;
 
+	private bool canInput = false;
+
 	public void SetMode(JoystickType joystickType)
 	{
 		this.joystickType = joystickType;
@@ -44,11 +46,13 @@ public class VariableJoystick : Joystick
 
 	public override void OnPointerDown(PointerEventData eventData)
 	{
-		// Ignore input if touch/mouse is outside joystick
-		if (!RectTransformUtility.RectangleContainsScreenPoint(
-			background,
-			eventData.position,
-			eventData.pressEventCamera))
+		canInput =
+			RectTransformUtility.RectangleContainsScreenPoint(
+				background,
+				eventData.position,
+				eventData.pressEventCamera);
+
+		if (!canInput)
 		{
 			return;
 		}
@@ -64,8 +68,29 @@ public class VariableJoystick : Joystick
 		base.OnPointerDown(eventData);
 	}
 
+	public new void OnDrag(PointerEventData eventData)
+	{
+		if (!canInput)
+		{
+			return;
+		}
+
+		if (!RectTransformUtility.RectangleContainsScreenPoint(
+			background,
+			eventData.position,
+			eventData.pressEventCamera))
+		{
+			canInput = false;
+			return;
+		}
+
+		base.OnDrag(eventData);
+	}
+
 	public override void OnPointerUp(PointerEventData eventData)
 	{
+		canInput = false;
+
 		if (joystickType != JoystickType.Fixed)
 		{
 			background.gameObject.SetActive(false);

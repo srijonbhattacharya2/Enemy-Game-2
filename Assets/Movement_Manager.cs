@@ -5,9 +5,10 @@ public class MovementManager : MonoBehaviour
     // [00:03:37] References for the variable joystick and player
     public VariableJoystick joystick;
     public Transform player;
+    public float targetAngle;
     
     // [00:05:10] Movement speed multiplier
-    private float moveSpeed = 5;
+    private float moveSpeed = 6;
 
     private Vector2 joystickInputs;
     private Vector2 screenBounds;
