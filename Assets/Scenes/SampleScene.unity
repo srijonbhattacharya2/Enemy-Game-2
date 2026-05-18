@@ -471,7 +471,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -66.899994}
+  m_AnchoredPosition: {x: 0, y: -66.900024}
   m_SizeDelta: {x: 0, y: 133.79}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &302513155
@@ -540,7 +540,7 @@ GameObject:
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1359,7 +1359,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   enemyPrefab: {fileID: 7564017456652472949, guid: 959640720a7f9d54aadd112595778aaf, type: 3}
   spawnDelay: 1
-  maxEnemies: 40
+  poolSize: 30
   offset: 1
 --- !u!1 &687641095
 GameObject:
