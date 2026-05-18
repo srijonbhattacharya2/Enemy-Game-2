@@ -1,17 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-
 public class Enemy : MonoBehaviour
 {
 	[HideInInspector]
 	public EnemySpawner spawner;
+
 	[SerializeField] private AudioSource audioSource;
 	[SerializeField] private AudioClip hurt;
+
 	private float speed;
 
 	private bool hasBeenVisible = false;
-
 	private bool movingBackwards = false;
 
 	private Transform player;
@@ -19,7 +19,8 @@ public class Enemy : MonoBehaviour
 
 	void Start()
 	{
-		GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+		GameObject playerObject =
+			GameObject.FindGameObjectWithTag("Player");
 
 		if (playerObject != null)
 		{
@@ -31,7 +32,7 @@ public class Enemy : MonoBehaviour
 
 		speed = Random.Range(1f, 5f);
 	}
-	
+
 	void Update()
 	{
 		if (player != null)
@@ -39,15 +40,47 @@ public class Enemy : MonoBehaviour
 			Vector3 direction =
 				(player.position - transform.position).normalized;
 
+			GameObject[] enemies =
+				GameObject.FindGameObjectsWithTag("Enemy");
+
+			foreach (GameObject enemy in enemies)
+			{
+				if (enemy == gameObject)
+				{
+					continue;
+				}
+
+				float distance =
+					Vector2.Distance(
+						transform.position,
+						enemy.transform.position
+					);
+
+				if (distance < 0.6f)
+				{
+					Vector3 avoidDirection =
+						(transform.position -
+						enemy.transform.position).normalized;
+
+					direction += avoidDirection;
+				}
+			}
+
+			direction.Normalize();
+
 			if (movingBackwards)
 			{
 				direction = -direction;
 			}
 
-			transform.position += direction * speed * Time.deltaTime;
+		transform.position = Vector3.Lerp(
+			transform.position,
+			transform.position +
+			direction * speed * Time.deltaTime,
+			200f * Time.deltaTime
+		);
 		}
 	}
-
 	void OnBecameVisible()
 	{
 		hasBeenVisible = true;
@@ -63,10 +96,12 @@ public class Enemy : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.CompareTag("Player"))
+		if (other.CompareTag("Player"))
 		{
 			playerScript.Health--;
-			Debug.Log (playerScript.Health);
+
+			Debug.Log(playerScript.Health);
+
 			StartCoroutine(MoveBackwards());
 		}
 	}
@@ -74,6 +109,7 @@ public class Enemy : MonoBehaviour
 	IEnumerator MoveBackwards()
 	{
 		audioSource.PlayOneShot(hurt);
+
 		movingBackwards = true;
 
 		speed *= 1.3f;
