@@ -3,5 +3,11 @@ using UnityEngine;
 public class TopBar : MonoBehaviour
 {
     public void quit()
-    {Application.Quit();}
+    {
+    #if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+	#else
+		Application.Quit();
+	#endif
+    }
 }

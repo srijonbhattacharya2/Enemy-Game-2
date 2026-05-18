@@ -57,12 +57,7 @@ public class Enemy : MonoBehaviour
 	{
 		if (hasBeenVisible)
 		{
-			if (spawner != null)
-			{
-				spawner.EnemyDestroyed();
-			}
-
-			Destroy(gameObject);
+			gameObject.SetActive(false);
 		}
 	}
 
