@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour
 						enemy.transform.position
 					);
 
-				if (distance < 2f)
+				if (distance < 1f)
 				{
 					Vector3 avoidDirection =
 						(transform.position -
