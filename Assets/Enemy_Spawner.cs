@@ -4,9 +4,15 @@ using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
+	[SerializeField] private float minimumSpawnDelay = 0.1f;
+	
+	[SerializeField] private float delayDecreaseInterval = 3f;
+
 	[SerializeField] private GameObject enemyPrefab;
 
 	[SerializeField] private float spawnDelay = 2f;
+
+	[SerializeField] private float decreaseAmount = 0.1f;
 
 	[SerializeField] private int poolSize = 30;
 
@@ -20,6 +26,8 @@ public class EnemySpawner : MonoBehaviour
 		CreatePool();
 
 		StartCoroutine(SpawnLoop());
+
+		StartCoroutine(DecreaseSpawnDelay());
 	}
 
 	void CreatePool()
@@ -55,6 +63,23 @@ public class EnemySpawner : MonoBehaviour
 			yield return new WaitForSeconds(
 				spawnDelay
 			);
+		}
+	}
+
+	IEnumerator DecreaseSpawnDelay()
+	{
+		while (spawnDelay > minimumSpawnDelay)
+		{
+			yield return new WaitForSeconds(
+				delayDecreaseInterval
+			);
+
+			spawnDelay -= decreaseAmount;
+
+			if (spawnDelay < minimumSpawnDelay)
+			{
+				spawnDelay = minimumSpawnDelay;
+			}
 		}
 	}
 
