@@ -451,3 +451,6 @@ MonoBehaviour:
   spawner: {fileID: 0}
   audioSource: {fileID: 6095813650759372640}
   hurt: {fileID: 8300000, guid: 453a4802ecc58db45897f275182f22f3, type: 3}
+  minSPEED: 1
+  maxSPEED: 5
+  separation: 1

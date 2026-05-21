@@ -749,7 +749,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -66.897}
+  m_AnchoredPosition: {x: 0, y: -67}
   m_SizeDelta: {x: 0, y: 133.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &475263829
@@ -765,7 +765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.392}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1059,7 +1059,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 638405287}
-  - {fileID: 1813363945}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
@@ -1542,11 +1541,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   minimumSpawnDelay: 0.3
   delayDecreaseInterval: 1
-  enemyPrefab: {fileID: 7564017456652472949, guid: 959640720a7f9d54aadd112595778aaf, type: 3}
+  enemyPrefab1: {fileID: 7564017456652472949, guid: 959640720a7f9d54aadd112595778aaf, type: 3}
+  enemyPrefab2: {fileID: 3267648068384193876, guid: f21a4ec1c75f18d40a3ee79f386391ee, type: 3}
   spawnDelay: 2
   decreaseAmount: 0.1
-  poolSize: 70
+  poolSize: 25
   offset: 1
+  boostInterval: 7
+  boostSpawnAmount: 5
+  boostIncreaseInterval: 7
+  boostIncreaseAmount: 1
 --- !u!1 &687641095
 GameObject:
   m_ObjectHideFlags: 0
@@ -4171,55 +4175,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &1813363944
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1813363945}
-  - component: {fileID: 1813363946}
-  m_Layer: 0
-  m_Name: Enemy Swarm Spawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1813363945
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813363944}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 519420032}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1813363946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813363944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37e81340b3565d44e9e1e299847024a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  swarmPrefab: {fileID: 4094792195208993423, guid: 5b9adc9dc2be805458cee4e2d7980a25, type: 3}
-  poolSize: 2
-  spawnDelay: 7
-  offset: 2
-  swarmPool: []
 --- !u!1 &1924306032 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3881087803549984437, guid: ec536a7718376554185e4a856d5ae230, type: 3}

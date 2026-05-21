@@ -31,14 +31,22 @@ public class MovementManager : MonoBehaviour
 
         if (Gamepad.current != null)
         {
-            Vector2 leftStick = Gamepad.current.leftStick.ReadValue();
-            Vector2 rightStick = Gamepad.current.rightStick.ReadValue();
-
-            realJoystickInputs = (leftStick + rightStick) / 2f;
+            foreach (var control in Gamepad.current.allControls)
+            {
+                if (control is UnityEngine.InputSystem.Controls.ButtonControl button)
+                {
+                    if (button.isPressed)
+                    {
+                        weaponButtonManager.weapon_button_clicked();
+                        break;
+                    }
+                }
+            }
         }
-        else
+
+        if (Keyboard.current != null && Keyboard.current.spaceKey.isPressed)
         {
-            realJoystickInputs = Vector2.zero;
+            weaponButtonManager.weapon_button_clicked();
         }
 
 		// Combine inputs

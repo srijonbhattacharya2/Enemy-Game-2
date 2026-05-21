@@ -5,10 +5,12 @@ using System.Collections.Generic;
 public class EnemySpawner : MonoBehaviour
 {
 	[SerializeField] private float minimumSpawnDelay = 0.1f;
-	
+
 	[SerializeField] private float delayDecreaseInterval = 3f;
 
-	[SerializeField] private GameObject enemyPrefab;
+	[SerializeField] private GameObject enemyPrefab1;
+
+	[SerializeField] private GameObject enemyPrefab2;
 
 	[SerializeField] private float spawnDelay = 2f;
 
@@ -17,6 +19,14 @@ public class EnemySpawner : MonoBehaviour
 	[SerializeField] private int poolSize = 30;
 
 	[SerializeField] private float offset = 2f;
+
+	[SerializeField] private float boostInterval = 7f;
+
+	[SerializeField] private int boostSpawnAmount = 5;
+
+	[SerializeField] private float boostIncreaseInterval = 3f;
+
+	[SerializeField] private int boostIncreaseAmount = 1;
 
 	private List<GameObject> enemyPool =
 		new List<GameObject>();
@@ -28,21 +38,40 @@ public class EnemySpawner : MonoBehaviour
 		StartCoroutine(SpawnLoop());
 
 		StartCoroutine(DecreaseSpawnDelay());
+
+		StartCoroutine(SpawnBoostLoop());
+
+		StartCoroutine(IncreaseBoostAmount());
 	}
 
 	void CreatePool()
 	{
-		for (int i = 0; i < poolSize; i++)
+		int halfPool = poolSize / 2;
+
+		for (int i = 0; i < halfPool; i++)
 		{
-			GameObject enemy = Instantiate(
-				enemyPrefab,
+			GameObject enemy1 = Instantiate(
+				enemyPrefab1,
 				Vector2.zero,
 				Quaternion.identity
 			);
 
-			enemy.SetActive(false);
+			enemy1.SetActive(false);
 
-			enemyPool.Add(enemy);
+			enemyPool.Add(enemy1);
+		}
+
+		for (int i = 0; i < poolSize - halfPool; i++)
+		{
+			GameObject enemy2 = Instantiate(
+				enemyPrefab2,
+				Vector2.zero,
+				Quaternion.identity
+			);
+
+			enemy2.SetActive(false);
+
+			enemyPool.Add(enemy2);
 		}
 	}
 
@@ -50,15 +79,7 @@ public class EnemySpawner : MonoBehaviour
 	{
 		while (true)
 		{
-			GameObject enemy = GetInactiveEnemy();
-
-			if (enemy != null)
-			{
-				enemy.transform.position =
-					GetRandomOutsidePosition();
-
-				enemy.SetActive(true);
-			}
+			SpawnEnemy();
 
 			yield return new WaitForSeconds(
 				spawnDelay
@@ -83,17 +104,78 @@ public class EnemySpawner : MonoBehaviour
 		}
 	}
 
-	GameObject GetInactiveEnemy()
+	IEnumerator SpawnBoostLoop()
 	{
+		while (true)
+		{
+			yield return new WaitForSeconds(
+				boostInterval
+			);
+
+			for (
+				int i = 0;
+				i < boostSpawnAmount;
+				i++
+			)
+			{
+				SpawnEnemy();
+			}
+		}
+	}
+
+	IEnumerator IncreaseBoostAmount()
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(
+				boostIncreaseInterval
+			);
+
+			boostSpawnAmount +=
+				boostIncreaseAmount;
+		}
+	}
+
+	void SpawnEnemy()
+	{
+		GameObject enemy =
+			GetRandomInactiveEnemy();
+
+		if (enemy != null)
+		{
+			enemy.transform.position =
+				GetRandomOutsidePosition();
+
+			enemy.SetActive(true);
+		}
+	}
+
+	GameObject GetRandomInactiveEnemy()
+	{
+		List<GameObject> inactiveEnemies =
+			new List<GameObject>();
+
 		for (int i = 0; i < enemyPool.Count; i++)
 		{
 			if (!enemyPool[i].activeInHierarchy)
 			{
-				return enemyPool[i];
+				inactiveEnemies.Add(
+					enemyPool[i]
+				);
 			}
 		}
 
-		return null;
+		if (inactiveEnemies.Count == 0)
+		{
+			return null;
+		}
+
+		return inactiveEnemies[
+			Random.Range(
+				0,
+				inactiveEnemies.Count
+			)
+		];
 	}
 
 	Vector2 GetRandomOutsidePosition()

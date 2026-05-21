@@ -11,6 +11,11 @@ public class Enemy : MonoBehaviour
 
 	private float speed;
 
+	[SerializeField] private float minSPEED;
+	[SerializeField] private float maxSPEED;
+
+	[SerializeField] private float separation;
+
 	private bool hasBeenVisible = false;
 	private bool movingBackwards = false;
 
@@ -30,7 +35,7 @@ public class Enemy : MonoBehaviour
 				playerObject.GetComponent<PlayerMovement>();
 		}
 
-		speed = Random.Range(1f, 5f);
+		speed = Random.Range(minSPEED, maxSPEED);
 	}
 
 	void Update()
@@ -56,7 +61,7 @@ public class Enemy : MonoBehaviour
 						enemy.transform.position
 					);
 
-				if (distance < 1f)
+				if (distance < separation)
 				{
 					Vector3 avoidDirection =
 						(transform.position -
