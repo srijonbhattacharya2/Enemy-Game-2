@@ -4219,6 +4219,7 @@ MonoBehaviour:
   poolSize: 2
   spawnDelay: 7
   offset: 2
+  swarmPool: []
 --- !u!1 &1924306032 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3881087803549984437, guid: ec536a7718376554185e4a856d5ae230, type: 3}
