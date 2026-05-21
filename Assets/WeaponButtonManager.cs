@@ -7,11 +7,15 @@ public class WeaponButtonManager : MonoBehaviour
 	public bool shoot = false;
 	[SerializeField] private Image WeaponButton;
 
+	private void Start()
+	{
+		Vibration.Init();
+	}
+	
 	public void weapon_button_clicked()
 	{
 		shoot = true;
-		Haptics.High();
-		Handheld.Vibrate();
+		Vibration.VibrateAndroid(50);
 		Debug.Log ("SHOOTING!!");
 
 		StartCoroutine(Wait());
