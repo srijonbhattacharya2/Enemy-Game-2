@@ -173,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5537189303828459978, guid: 959640720a7f9d54aadd112595778aaf, type: 3}
       propertyPath: separation
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7564017456652472949, guid: 959640720a7f9d54aadd112595778aaf, type: 3}
       propertyPath: m_Icon

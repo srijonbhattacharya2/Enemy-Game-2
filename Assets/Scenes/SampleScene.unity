@@ -1547,7 +1547,7 @@ MonoBehaviour:
   decreaseAmount: 0.1
   poolSize: 25
   offset: 1
-  boostInterval: 7
+  boostInterval: 15
   boostSpawnAmount: 5
   boostIncreaseInterval: 7
   boostIncreaseAmount: 1

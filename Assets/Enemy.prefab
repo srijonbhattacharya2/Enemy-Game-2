@@ -453,4 +453,4 @@ MonoBehaviour:
   hurt: {fileID: 8300000, guid: 453a4802ecc58db45897f275182f22f3, type: 3}
   minSPEED: 1
   maxSPEED: 5
-  separation: 1
+  separation: 0.5
