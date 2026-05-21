@@ -15,9 +15,12 @@ public class WeaponButtonManager : MonoBehaviour
 	public void weapon_button_clicked()
 	{
 		shoot = true;
+		#if UNITY_ANDROID
 		Vibration.VibrateAndroid(50);
-		Debug.Log ("SHOOTING!!");
-
+		#endif
+		#if UNITY_IOS
+		VibratePop()
+		#endif
 		StartCoroutine(Wait());
 	}
 

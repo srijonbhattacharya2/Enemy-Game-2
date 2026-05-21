@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class game_over_panel : MonoBehaviour
-{
+{	
 	private PlayerMovement playerScript;
 
 	[SerializeField] private AudioSource audioSource;
@@ -30,6 +30,19 @@ public class game_over_panel : MonoBehaviour
 				.gameObject.SetActive(true);
 
 			audioSource.PlayOneShot(sfx);
+
+			#if UNITY_ANDROID
+				long[] pattern = { 0, 200, 180, 140, 100, 70 };
+				Vibration.VibrateAndroid(pattern, -1);
+
+			#elif UNITY_IOS
+				Vibration.VibrateNope();
+				Vibration.VibratePeek();
+				Vibration.VibratePop();
+
+			#else
+				Debug.Log("No vibration support");
+			#endif
 
 			Time.timeScale = 0f;
 		}
