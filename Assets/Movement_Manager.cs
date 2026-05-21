@@ -1,9 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class MovementManager : MonoBehaviour
 {
-	public WeaponButtonManager weaponButtonManager;
+	[SerializeField] private Image JoystickBackground;
+    [SerializeField] private Image JoystickHandle;
+    
+    public WeaponButtonManager weaponButtonManager;
     // [00:03:37] References for the variable joystick and player
 	public VariableJoystick joystick;
 	public Transform player;
@@ -54,6 +58,21 @@ public class MovementManager : MonoBehaviour
 
 		bool hasVirtualInput = joystickInputs != Vector2.zero;
 		bool hasRealInput = realJoystickInputs != Vector2.zero;
+
+        if (!hasVirtualInput)
+        {
+		    Color color = JoystickBackground.color;
+			color.a = 0.4f;
+			JoystickBackground.color = color;
+            JoystickHandle.color = color;
+        }
+        else
+        {
+		    Color color = JoystickBackground.color;
+			color.a = 0.7f;
+			JoystickBackground.color = color;
+            JoystickHandle.color = color;
+        }
 
 		// If both are moving, average them
 		if (hasVirtualInput && hasRealInput)
