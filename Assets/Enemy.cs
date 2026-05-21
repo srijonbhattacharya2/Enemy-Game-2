@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
 	[SerializeField] private AudioSource audioSource;
 	[SerializeField] private AudioClip hurt;
 
+	[SerializeField] private GameObject thingToHide;
+
 	private float speed;
 
 	[SerializeField] private float minSPEED;
@@ -40,6 +42,12 @@ public class Enemy : MonoBehaviour
 
 	void Update()
 	{
+		// Hide/show object based on player health
+		if (thingToHide != null && playerScript != null)
+		{
+			thingToHide.SetActive(playerScript.Health > 0);
+		}
+
 		if (player != null)
 		{
 			Vector3 direction =
@@ -78,14 +86,15 @@ public class Enemy : MonoBehaviour
 				direction = -direction;
 			}
 
-		transform.position = Vector3.Lerp(
-			transform.position,
-			transform.position +
-			direction * speed * Time.deltaTime,
-			200f * Time.deltaTime
-		);
+			transform.position = Vector3.Lerp(
+				transform.position,
+				transform.position +
+				direction * speed * Time.deltaTime,
+				200f * Time.deltaTime
+			);
 		}
 	}
+
 	void OnBecameVisible()
 	{
 		hasBeenVisible = true;
