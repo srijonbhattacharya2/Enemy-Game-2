@@ -1,17 +1,40 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Gun : MonoBehaviour
 {
 	private bool bulletExists = false;
-    
-    public GameObject bulletPrefab;
+
+	public GameObject bulletPrefab;
 
 	public float bulletSpeed = 10f;
 
 	public MovementManager movementManager;
 
 	public WeaponButtonManager weaponButtonManager;
+
+	private List<GameObject> bulletPool =
+		new List<GameObject>();
+
+	public int poolSize = 10;
+
+	void Start()
+	{
+		for (int i = 0; i < poolSize; i++)
+		{
+			GameObject bullet =
+				Instantiate(
+					bulletPrefab,
+					Vector3.zero,
+					Quaternion.identity
+				);
+
+			bullet.SetActive(false);
+
+			bulletPool.Add(bullet);
+		}
+	}
 
 	void Update()
 	{
@@ -30,89 +53,111 @@ public class Gun : MonoBehaviour
 		}
 	}
 
-    void Shoot()
-        {
-            if (bulletExists)
-            {
-                return;
-            }
+	void Shoot()
+	{
+		if (bulletExists)
+		{
+			return;
+		}
 
-            GameObject nearestEnemy =
-                FindNearestEnemy();
+		GameObject nearestEnemy =
+			FindNearestEnemy();
 
-            if (nearestEnemy == null)
-            {
-                return;
-            }
+		if (nearestEnemy == null)
+		{
+			return;
+		}
 
-            GameObject bullet =
-                Instantiate(
-                    bulletPrefab,
-                    transform.position,
-                    Quaternion.identity
-                );
+		GameObject bullet =
+			GetPooledBullet();
 
-            bulletExists = true;
+		if (bullet == null)
+		{
+			return;
+		}
 
-            Vector2 direction =
-                (
-                    nearestEnemy.transform.position -
-                    transform.position
-                ).normalized;
+		bullet.SetActive(true);
 
-            bullet.transform.right =
-                -direction;
+		bullet.transform.position =
+			transform.position;
 
-            Rigidbody2D rb =
-                bullet.GetComponent<Rigidbody2D>();
+		bullet.transform.rotation =
+			Quaternion.identity;
 
-            rb.linearVelocity =
-                direction * bulletSpeed;
+		Vector2 direction =
+			(
+				nearestEnemy.transform.position -
+				transform.position
+			).normalized;
 
-            Destroy(
-                bullet,
-                3f
-            );
+		bullet.transform.right =
+			-direction;
 
-            StartCoroutine(
-                ResetBullet()
-            );
-        }
+		Rigidbody2D rb =
+			bullet.GetComponent<Rigidbody2D>();
 
-    IEnumerator ResetBullet()
-        {
-            yield return new WaitForSeconds(0.3f);
+		rb.linearVelocity =
+			direction * bulletSpeed;
 
-            bulletExists = false;
-        }
+		Bullet bulletScript =
+			bullet.GetComponent<Bullet>();
 
-    GameObject FindNearestEnemy()
-        {
-            GameObject[] enemies =
-                GameObject.FindGameObjectsWithTag(
-                    "Enemy"
-                );
+		bulletScript.StartLifeTimer();
 
-            GameObject nearestEnemy = null;
+		bulletExists = true;
 
-            float shortestDistance = Mathf.Infinity;
+		StartCoroutine(
+			ResetBullet()
+		);
+	}
 
-            foreach (GameObject enemy in enemies)
-            {
-                float distance =
-                    Vector2.Distance(
-                        transform.position,
-                        enemy.transform.position
-                    );
+	GameObject GetPooledBullet()
+	{
+		foreach (GameObject bullet in bulletPool)
+		{
+			if (!bullet.activeInHierarchy)
+			{
+				return bullet;
+			}
+		}
 
-                if (distance < shortestDistance)
-                {
-                    shortestDistance = distance;
+		return null;
+	}
 
-                    nearestEnemy = enemy;
-                }
-            }
+	IEnumerator ResetBullet()
+	{
+		yield return new WaitForSeconds(0.3f);
 
-            return nearestEnemy;
-        }
+		bulletExists = false;
+	}
+
+	GameObject FindNearestEnemy()
+	{
+		GameObject[] enemies =
+			GameObject.FindGameObjectsWithTag(
+				"Enemy"
+			);
+
+		GameObject nearestEnemy = null;
+
+		float shortestDistance = Mathf.Infinity;
+
+		foreach (GameObject enemy in enemies)
+		{
+			float distance =
+				Vector2.Distance(
+					transform.position,
+					enemy.transform.position
+				);
+
+			if (distance < shortestDistance)
+			{
+				shortestDistance = distance;
+
+				nearestEnemy = enemy;
+			}
+		}
+
+		return nearestEnemy;
+	}
 }

@@ -1,12 +1,30 @@
 using UnityEngine;
+using System.Collections;
 
 public class Bullet : MonoBehaviour
 {
 	public float lifeTime = 3f;
 
-	void Start()
+	private Coroutine lifeCoroutine;
+
+	public void StartLifeTimer()
 	{
-		Destroy(gameObject, lifeTime);
+		if (lifeCoroutine != null)
+		{
+			StopCoroutine(lifeCoroutine);
+		}
+
+		lifeCoroutine =
+			StartCoroutine(
+				LifeTimer()
+			);
+	}
+
+	IEnumerator LifeTimer()
+	{
+		yield return new WaitForSeconds(lifeTime);
+
+		DeactivateBullet();
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
@@ -15,5 +33,21 @@ public class Bullet : MonoBehaviour
 		{
 			other.gameObject.SetActive(false);
 		}
+	}
+
+	void OnBecameInvisible()
+	{
+		DeactivateBullet();
+	}
+
+	void DeactivateBullet()
+	{
+		Rigidbody2D rb =
+			GetComponent<Rigidbody2D>();
+
+		rb.linearVelocity =
+			Vector2.zero;
+
+		gameObject.SetActive(false);
 	}
 }
