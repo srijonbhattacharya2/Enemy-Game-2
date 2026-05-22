@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour
 
 	[SerializeField] private float separation;
 
+	[SerializeField] private float bulletAvoidDistance = 3f;
+
 	private bool hasBeenVisible = false;
 	private bool movingBackwards = false;
 
@@ -53,6 +55,7 @@ public class Enemy : MonoBehaviour
 			Vector3 direction =
 				(player.position - transform.position).normalized;
 
+			// Enemy separation
 			GameObject[] enemies =
 				GameObject.FindGameObjectsWithTag("Enemy");
 
@@ -76,6 +79,34 @@ public class Enemy : MonoBehaviour
 						enemy.transform.position).normalized;
 
 					direction += avoidDirection;
+				}
+			}
+
+			// Bullet dodge 💨
+			GameObject[] bullets =
+				GameObject.FindGameObjectsWithTag("Bullet");
+
+			foreach (GameObject bullet in bullets)
+			{
+				float bulletDistance =
+					Vector2.Distance(
+						transform.position,
+						bullet.transform.position
+					);
+
+				if (bulletDistance < bulletAvoidDistance)
+				{
+					Vector2 bulletDirection =
+						bullet.transform.right;
+
+					Vector2 dodgeDirection =
+						new Vector2(
+							-bulletDirection.y,
+							bulletDirection.x
+						);
+
+					direction +=
+						(Vector3)dodgeDirection * 5f;
 				}
 			}
 
