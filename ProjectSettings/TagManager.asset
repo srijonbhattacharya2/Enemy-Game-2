@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Bullet
   - EnemySwarm
+  - Boss
   layers:
   - Default
   - TransparentFX

@@ -4,8 +4,6 @@ public class PlayerMovement : MonoBehaviour
 {
 	[SerializeField] private float speed = 20f;
 
-	[SerializeField] private GameObject thingToHide;
-
 	private Rigidbody2D rb;
 	private Vector2 movement;
 
@@ -22,9 +20,6 @@ public class PlayerMovement : MonoBehaviour
 		float moveY = Input.GetAxisRaw("Vertical");
 
 		movement = new Vector2(moveX, moveY);
-
-		// Hide if health is 0, otherwise show
-		thingToHide.SetActive(Health > 0);
 	}
 
 	void FixedUpdate()

@@ -33,6 +33,19 @@ public class Bullet : MonoBehaviour
 		{
 			other.gameObject.SetActive(false);
 		}
+
+		if (other.CompareTag("Boss"))
+		{
+			Boss boss =
+			other.GetComponent<Boss>();
+
+			if (boss != null)
+			{
+				boss.TakeDamage(1);
+			}
+
+			gameObject.SetActive(false);
+		}
 	}
 
 	void OnBecameInvisible()

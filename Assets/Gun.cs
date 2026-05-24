@@ -138,6 +138,11 @@ public class Gun : MonoBehaviour
 				"Enemy"
 			);
 
+		GameObject[] bosses =
+			GameObject.FindGameObjectsWithTag(
+				"Boss"
+			);
+
 		GameObject nearestEnemy = null;
 
 		float shortestDistance = Mathf.Infinity;
@@ -155,6 +160,22 @@ public class Gun : MonoBehaviour
 				shortestDistance = distance;
 
 				nearestEnemy = enemy;
+			}
+		}
+
+		foreach (GameObject boss in bosses)
+		{
+			float distance =
+				Vector2.Distance(
+					transform.position,
+					boss.transform.position
+				);
+
+			if (distance < shortestDistance)
+			{
+				shortestDistance = distance;
+
+				nearestEnemy = boss;
 			}
 		}
 
